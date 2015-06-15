@@ -1,0 +1,14 @@
+
+/************** ALERTS **************/
+.alerts-container .alert {
+	margin-bottom: 0;
+}
+
+.alert h4 {
+	font-weight: bold;
+}
+
+.alert.alert-primary {
+	background: #000;
+	color: #fff;
+}
