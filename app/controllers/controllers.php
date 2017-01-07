@@ -1,38 +1,12 @@
 <?php
 
-//Ctrls
+//Controllers
+//Controllers can be put in here or in external files the next 2 lines will auto import all controller files (*.php)
 
-$app->controllers()->add('loginCtrl', function(){
-	global $app, $user;
+global $app;
 
-	$data = array();
-	$data['passed'] = false;
+$includer = $app->get('includer');
+$path = $app->get('rel_path');
 
-	if($app->request()->ajax){
-		$username = $_POST['username'];
-		$password = $_POST['password'];
+$includer->includePath(dirname(__FILE__), array("omit" => array(__FILE__) ));
 
-		if( strlen($username) === 0){
-			$data['feedback'] = 'please enter a username';
-		}elseif( strlen($password) === 0){
-			$data['feedback'] = 'please enter a password';
-		}else{
-
-			if($user->login($username, $password)){
-				$data['passed'] = true;
-				$data['feedback'] = 'logging in <i class="fa fa-cog fa-spin"></i>';
-			}else{
-				$data['feedback'] = 'password or username is wrong.';
-			}
-
-		}
-	}
-
-	$app->json( $data );
-
-});
-
-$app->controllers()->add('logoutCtrl', function(){
-	global $user, $app;
-	$user->logout();
-});

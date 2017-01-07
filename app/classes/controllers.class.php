@@ -15,10 +15,9 @@ class controllers {
 	}
 
 	public function fire($name){
-		//if(isset($this->controllers[$name])){
+		if(isset($this->controllers[$name])){
 			$this->controllers[$name]();
-			print_pre($this);
-		//}
+		}
 	}
 
 }

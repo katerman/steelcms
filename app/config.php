@@ -8,6 +8,7 @@ $config_path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $config_root);
 $array = array(
 	'config_path' => $config_root,
 	'root_path' => $config_path,
+	'index_path' => dirname($config_path),
 
 	'password_hash_alg' => 'whirlpool',
 
@@ -18,6 +19,9 @@ $array = array(
 	'update_path' => $config_root.'/includes/updates/',
 
 	'admin_template_path' => $config_root.'/views/admin/',
+	'admin_template_theme' => 'default',
+	'default_admin_root_template' => 'admin.view.php',
+
 	'template_path' => $config_root.'/views/app/',
 	'template_theme' => 'default',
 	'default_root_template' => 'app.view.php',
@@ -42,5 +46,6 @@ $array = array(
 );
 
 $array['current_theme_path'] = $array['template_path'].$array['template_theme'].'/';
+$array['current_admin_theme_path'] = $array['admin_template_path'].$array['admin_template_theme'].'/';
 
 $_config = (object) $array; //config object

@@ -29,7 +29,7 @@
 					if(data['passed'] === true){
 						feedback.addClass('text-success').removeClass('hidden text-danger');
 
-						steel.replacePage();
+						steel.replacePage('/admin');
 
 					} else {
 						feedback.addClass('text-danger').removeClass('hidden text-success');
@@ -59,7 +59,7 @@
 					method: 'get',
 					cache: false
 				}).done(function(data){
-					steel.replacePage();
+					steel.replacePage('/admin');
 				});
 
 				e.preventDefault();

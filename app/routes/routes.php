@@ -1,32 +1,43 @@
 <?php
 
 $template_path = $_config->current_theme_path;
+$admin_path = $_config->current_admin_theme_path;
 
 require $_config->config_path . '/controllers/controllers.php'; //get our controllers
 
 
 $app->route('/', function(){
-	global $app, $template_path, $_config, $alerts, $user;
+	global $app, $template_path, $_config, $alerts, $user, $fpdo;
 	$default = $_config->default_root_template;
-    $app->render($template_path.$default,  array("alerts"=>$alerts, "config"=>$_config, "app"=>$app, 'user' => $user) );
+
+	$pageQuery = $fpdo->from('pages')->fetchAll();
+
+    $app->render($template_path.$default,  array("dataToPass" => array("pages" => $pageQuery), "alerts"=>$alerts, "config"=>$_config, "app"=>$app, 'user' => $user) );
 });
 
-$app->route('GET /users', function(){
-    global $app, $fpdo, $template_path;
 
-    $query = $fpdo->from('users');
+$app->route('GET /admin/pages/', function(){
+	global $app, $admin_path, $_config, $alerts, $user, $template_path, $fpdo;
 
-    $app->render($template_path.'/test/users.view.php',  array("users"=>$query) );
+	$default = $_config->default_root_template;
+	$page_name = 'admin-pages';
 
+	if($user->isAdmin()){
+
+		$pageQuery = $fpdo->from('pages')->fetchAll();
+
+		$app->render($template_path . $default,  array("templateToRender" => $admin_path.'admin.pages.view.php', "dataToPass" => array("pages" => $pageQuery), "alerts"=>$alerts, "config"=>$_config, "app"=>$app, 'user' => $user, 'template_path' => $admin_path ) );
+	}else{
+		send_404();
+	}
 });
 
-$app->route('GET /user/@id', function($id){
-    global $app, $fpdo, $template_path;
+$app->route('/404', function(){
+	global $app, $template_path, $_config, $alerts, $user, $fpdo;
 
-    $query = $fpdo->from('users')->where('id',$id);
+	$default = $_config->default_root_template;
 
-    $app->render($template_path.'/test/user.view.php',  array("user"=>$query) );
-
+    $app->render($template_path.$default,  array("templateToRender"=> $template_path.'fourohfour.view.php', "alerts"=>$alerts, "config"=>$_config, "app"=>$app, 'user' => $user ) );
 });
 
 $app->route('POST|GET /login',function(){
@@ -37,4 +48,9 @@ $app->route('POST|GET /login',function(){
 $app->route('POST|GET /logout',function(){
 	global $app;
 	$app->controllers()->fire('logoutCtrl');
+});
+
+$app->route('POST|GET /register',function(){
+	global $app;
+	$app->controllers()->fire('basicRegisterCtrl');
 });

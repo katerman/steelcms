@@ -12,3 +12,7 @@
 	background: #000;
 	color: #fff;
 }
+
+#main-navbar a .fa {
+	margin-right: 5px;
+}
